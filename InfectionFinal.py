@@ -7,7 +7,7 @@ def get_input(prompt, type_ = None, min = None, max = None):
     if min is not None and max is not None and max < min:
         raise ValueError("Min must be less than or equal to max.")
     while True:
-        input = input(prompt)
+        input = raw_input(prompt)
         if type_ is not None:
             try:
                 input = type_(input)
@@ -24,14 +24,14 @@ def get_input(prompt, type_ = None, min = None, max = None):
 opt = get_input("Enter 1 to enable realism or 0 for original: ", type_ = int, min = 0, max = 1)
 p = get_input("Enter probability of transmission: ", type_ = float, min = 0, max = 1)
 n = get_input("Enter population size: ", type_ = int, min = 1)
-I0 = get_input("Enter initial infected: ", type_ = int, min = 0, max = N)
+I0 = get_input("Enter initial infected: ", type_ = int, min = 0, max = n)
 RP = get_input("Enter recovery period: ", type_ = int, min = 1)
 if (opt == 1):
 	niPrompt = "Enter average number of contacts: "
 else:
 	niPrompt = "Enter number of contacts: "
-Ni = get_input(niPrompt, int)
-trials = get_input("Enter number of trials: ", int)
+Ni = get_input(niPrompt, int, min = 1)
+trials = get_input("Enter number of trials: ", int, min = 1)
 
 In = np.zeros(RP, dtype=int) # infected array size RP
 durations, infections = [], [] # arrays for tracking durations and infections for each trial
@@ -63,9 +63,9 @@ for i in range(trials):
 
 f1 = plt.figure(1)
 plt.hist(durations, bins=30)
-plt.title('durations Frequency in {0:d} trials\nVariance: {1:3f}, Mean: {2:3f}'.format(trials, np.var(durations), sum(durations) / float(trials)))
+plt.title('Durations Frequency in {0:d} trials\nVariance: {1:3f}, Mean: {2:3f}'.format(trials, np.var(durations), sum(durations) / float(trials)))
 plt.ylabel('Frequency');
-plt.xlabel('durations of Epidemic');
+plt.xlabel('Durations of Epidemic');
 
 f2 = plt.figure(2)
 plt.hist(infections, bins=30)
